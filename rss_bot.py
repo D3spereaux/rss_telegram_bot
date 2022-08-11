@@ -8,7 +8,7 @@ import feedparser
 BOT_TOKEN = 'XXXXXXXXXXXX' # the one you saved in previous step
 CHANNEL_ID = '-XXXXXXXXXX' # don't forget to add this
 
-FEED_URL_1="https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss.xml"
+FEED_URL_1="https://www.feedforall.com/sample.xml"
 
 def send_message(message):
     requests.get(f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?chat_id={CHANNEL_ID}&text={message}')
