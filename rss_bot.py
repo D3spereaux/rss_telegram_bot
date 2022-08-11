@@ -1,5 +1,3 @@
-#Ref: https://ljmocic.medium.com/make-telegram-bot-for-notifying-about-new-rss-feed-items-4cfbcc37f4fd
-
 from datetime import timedelta, datetime
 from dateutil import parser
 from pprint import pprint
