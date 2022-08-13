@@ -5,23 +5,33 @@ from time import sleep
 import requests
 import feedparser
 
-BOT_TOKEN = 'XXXXXXXXXXXX' # the one you saved in previous step
-CHANNEL_ID = '-XXXXXXXXXX' # don't forget to add this
+BOT_TOKEN = 'XXXXXX:XXXXX' # Telegram Bot Token
+CHANNEL_ID = '-XXXXXX:XXXXX' # Telegram Channel ID
 
 FEED_URL_1="https://www.feedforall.com/sample.xml"
 
 def send_message(message):
     requests.get(f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?chat_id={CHANNEL_ID}&text={message}')
 
-def news_update(FEED):
-   rss_feed = feedparser.parse(FEED)
-   for entry in rss_feed.entries:
-      parsed_date = parser.parse(entry.updated)
-      parsed_date = (parsed_date - timedelta(hours=8)).replace(tzinfo=None) # remove timezone offset
-      now_date = datetime.utcnow()
-      published_10_minutes_ago = now_date - parsed_date < timedelta(minutes=10)
-      msg = f"Vul ID: {entry.get('title')}\n\nDescription: {entry.get('summary')}\n\nLink: {entry.get('link')}"
-      if published_10_minutes_ago == True:
-         send_message(msg)
+def get_last_checkin(FEED):
+    file = open('lastcheckin.txt', 'r') #Example: 2021-02-29 15:15:15+00:00
+    last_checkin = file.read().strip()
+    last_checkin = parser.parse(last_checkin)
+    new_checkin  = last_checkin
 
-news_update(FEED_URL_1)
+    rss_feed = feedparser.parse(FEED)
+    for entry in rss_feed.entries:
+        entry_update = parser.parse(entry.updated)
+        if entry_update > last_checkin:
+            msg = f"Vul ID: {entry.get('title')}\n\nDescription: {entry.get('summary')}\n\nLink: {entry.get('link')}"
+            send_message(msg)
+#            print(msg)
+            if entry_update > new_checkin:
+                new_checkin = entry_update
+    new_checkin = str(new_checkin)
+    file = open('lastcheckin.txt', 'w')
+    file.write(new_checkin)
+    file.close()
+
+#### MAIN ####
+get_last_checkin(FEED_URL_1)
