@@ -25,7 +25,6 @@ def get_last_checkin(FEED):
         if entry_update > last_checkin:
             msg = f"Vul ID: {entry.get('title')}\n\nDescription: {entry.get('summary')}\n\nLink: {entry.get('link')}"
             send_message(msg)
-#            print(msg)
             if entry_update > new_checkin:
                 new_checkin = entry_update
     new_checkin = str(new_checkin)
